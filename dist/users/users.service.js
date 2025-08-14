@@ -74,32 +74,38 @@ let UsersService = class UsersService {
     findAll(role) {
         console.log(role);
         if (role) {
-            return this.users.filter((user) => user.role === role);
+            const roleArray = this.users.filter((user) => user.role === role);
+            if (roleArray)
+                throw new common_1.NotFoundException('User role not found');
         }
         return this.users;
     }
     findOne(id) {
-        return this.users.filter((user) => user.id === id);
+        const user = this.users.find((user) => user.id === id);
+        if (!user) {
+            throw new common_1.NotFoundException("This user doesn't exist");
+        }
+        return user;
     }
-    create(user) {
-        if (Object.keys(user).length) {
+    create(createUserDto) {
+        if (Object.keys(createUserDto).length) {
             throw new Error("user can't be empty");
         }
         try {
             const userByHighestId = [...this.users].sort((a, b) => b.id - a.id);
             const newUser = {
                 id: userByHighestId[0].id + 1,
-                ...user,
+                ...createUserDto,
             };
         }
         catch (error) {
             console.error(error);
         }
     }
-    update(id, updateUser) {
+    update(id, updateUserDto) {
         this.users = this.users.map((user) => {
             if (user.id === id) {
-                return { ...user, ...updateUser };
+                return { ...user, ...updateUserDto };
             }
             return user;
         });

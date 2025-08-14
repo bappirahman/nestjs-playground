@@ -1,14 +1,30 @@
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    role: 'INTERN' | 'ENGINEER' | 'ADMIN';
-}
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 export declare class UsersService {
     private users;
-    findAll(role?: User['role']): User[];
-    findOne(id: number): User[];
-    create(user: Omit<User, 'id'>): void;
-    update(id: number, updateUser: Partial<User>): User[];
-    delete(id: User['id']): User[];
+    findAll(role?: any): {
+        id: number;
+        name: string;
+        email: string;
+        role: string;
+    }[];
+    findOne(id: number): {
+        id: number;
+        name: string;
+        email: string;
+        role: string;
+    };
+    create(createUserDto: CreateUserDto): void;
+    update(id: number, updateUserDto: UpdateUserDto): {
+        id: number;
+        name: string;
+        email: string;
+        role: string;
+    };
+    delete(id: number): {
+        id: number;
+        name: string;
+        email: string;
+        role: string;
+    };
 }
